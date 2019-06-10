@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+
+<body>
+  <canvas id="draw" width="800" height="800"></canvas>
+
+  <script>
+
+    const canvas = document.querySelector('#draw');
+    const ctx = canvas.getContext('2d'); // Gives you something to draw on 
+
+    canvas.width = window.innerWidth; // Makes the canvas the entire width of the page 
+    canvas.height = window.innerHeight; // Makes the canvas the entire length of the page 
+
+    ctx.strokeStyle = '#BADA55'; // Color for drawing 
+    ctx.lineJoin = 'round'; // When a line meets another line should it be squared off or rounded 
+    ctx.lineCap = 'round'; // End of the line will be round and not squared off
+    ctx.lineWidth = 60;
+    // ctx.globalCompositeOperation = 'screen';
+
+    let isDrawing = false; // A flag to trigger the draw feature upon clicking down by setting the event listener to true upon clicking the mouse down
+    let lastX = 0; // Sets up a start and a stop for x and y to tell the drawing the location of the start and the end 
+    let lastY = 0;
+    let hue = 0;
+    let direction = true
+
+    function draw(e){
+      if(!isDrawing) return; // Stops the function from running when they are not moused down. ! opposite of isDrawing value meaning true
+       console.log(e)
+       ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`
+
+       ctx.beginPath(); // Starting up our line 
+
+       // -------------------- START FROM --------------------------
+       ctx.moveTo(lastX, lastY); // Start with an x and y and move to an x and a y
+       // --------------------- GO TO ------------------------------
+       ctx.lineTo(e.offsetX, e.offsetY); // End of the click 
+       // -----------------------------------------------------------
+       ctx.stroke() // Will not initiate any drawing on the page till you call stroke 
+
+       lastX = e.offsetX;
+       lastY = e.offsetY; 
+      // CAN BE WRITTEN IN SHORT LIKE BELOW
+      // [lastX, lastY] = [e.offsetX, e.offsetY]; // new ES6 syntax. Destructuring an array
+
+      hue++; 
+      if (hue >= 360) {
+    hue = 0;
+  }
+  if (ctx.lineWidth >= 60 || ctx.lineWidth <= 1) {
+    direction = !direction;
+  }
+
+  if(direction) {
+    ctx.lineWidth++;
+  } else {
+    ctx.lineWidth--;
+  }
+    }
+    
+
+
+    canvas.addEventListener('mousedown', (e) => {
+          isDrawing = true
+          lastX = e.offsetX; // As soon as the mouse is clicked down these values of x and y will update
+          lastY = e.offsetY; 
+      }); // Sets to true when the mouse is clicked down     
+    canvas.addEventListener('mousemove', draw); // Triggers event upon moving mouse. Perfect for drawing
+    canvas.addEventListener('mouseup', () => isDrawing = false); // Set to false when mouse is not clicked
+    canvas.addEventListener('mouseout', () => isDrawing = false); // Set to false when mouse it out of browser
+
+
+
+
+  </script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
+
+</body>
+
+</html>

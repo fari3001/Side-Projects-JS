@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Dancing+Script&display=swap" rel="stylesheet">
+
+  <meta charset="UTF-8">
+  <title>Speech Detection</title>
+</head>
+<body>
+  <h1>Say Something!</h1>
+
+  <div class="words" contenteditable>
+  </div>
+
+<script>
+  // inbuilt browser speech recognition software 
+  window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true; // allows the text to print out as we speak instead of when we stop speaking 
+
+  let p = document.createElement('p')
+  const words = document.querySelector('.words');
+  words.appendChild(p);
+
+  recognition.addEventListener('result', e => { // result hosts a lot of data on text to speech in the prototype
+    console.log(e)
+    const transcript = Array.from(e.results) // Converts to an array 
+      .map(result => result[0]) // maps over and grabs the first element in the array prototype
+      .map(result => result.transcript) // then grabs the text from that array 
+      .join('') // converts those arrays to strings 
+
+      p.textContent = transcript;
+      if(e.results[0].isFinal) { // if the function is finished running, print out the results
+        p = document.createElement('p'); // create a paragraph tag with the text
+        words.appendChild(p); // append it the words class
+      console.log(e)
+
+      }
+
+      if(transcript.includes('play music')) {
+        let audio = new Audio('gm-cw.mp3');
+        audio.currentTime = 0; 
+        audio.play();
+      }
+  })
+
+  recognition.addEventListener('end', recognition.start); // when our event is over, run the function again to relisten for an other speech 
+
+recognition.start()
+
+</script>
+
+
+  <style>
+    html {
+      font-size: 10px;
+      font-family: 'Dancing Script', cursive;
+
+    }
+    h1 {
+      text-align: center;
+      color: white;
+    }
+    body {
+      background: teal;
+      font-family: 'helvetica neue';
+      font-weight: 200;
+      font-size: 20px;
+    }
+
+    .words {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0,0,0,0.1);
+      padding: 1rem 2rem 1rem 5rem;
+      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
+    
+    p {
+      margin: 0 0 3rem;
+    }
+
+    .words:before {
+      content: '';
+      position: absolute;
+      width: 4px;
+      top: 0;
+      left: 30px;
+      bottom: 0;
+      border: 1px solid;
+      border-color: transparent #efe4e4;
+    }
+  </style>
+
+</body>
+</html>

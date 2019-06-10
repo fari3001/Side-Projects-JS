@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Array Cardio 💪💪</title>
+</head>
+
+<body>
+  <p><em>Psst: have a look at the JavaScript Console</em> 💁</p>
+  <script>
+    // ## Array Cardio Day 2
+
+    const people = [{
+        name: 'Wes',
+        year: 1988
+      },
+      {
+        name: 'Kait',
+        year: 1986
+      },
+      {
+        name: 'Irv',
+        year: 1970
+      },
+      {
+        name: 'Lux',
+        year: 2015
+      }
+    ];
+
+    const comments = [{
+        text: 'Love this!',
+        id: 523423
+      },
+      {
+        text: 'Super good',
+        id: 823423
+      },
+      {
+        text: 'You are the best',
+        id: 2039842
+      },
+      {
+        text: 'Ramen is my fav food ever',
+        id: 123523
+      },
+      {
+        text: 'Nice Nice Nice!',
+        id: 542328
+      }
+    ];
+
+    // Some and Every Checks
+    // Array.prototype.some() // is at least one person 19 or older?
+    // Some = at least one item in your array meets what you looking for 
+
+    // ------------------------------ THIS -------------------------------------
+    const isAdult = people.some(function (person) { // uses the some function to iterate through person
+      const currentYear = (new Date()).getFullYear(); // uses the inbuild new date get full year to get current year (2019)
+      if (currentYear - person.year >= 19) { // checks that at least one individual in the people array is above 19 and returns true
+        return true
+      }
+    })
+    // --------------------------------------------------------------------------
+
+    // -------------------- IS SAME AS BELOW --------------------------------------
+
+    const isAdult2 = people.some(person => new Date().getFullYear() - person.year >= 19) // DRY CODE
+
+    // -------------------- DRY AF -------------------------------------------------
+
+    console.log({isAdult2}) // Call the function 
+
+    // Array.prototype.every() // is everyone 19 or older?
+    // Same as some but checks that every single element in the array instead of just one 
+    const allAdults = people.every(person => new Date().getFullYear() - person.year >= 19) // DRY CODE
+
+    console.log({allAdults}) // Call the function 
+
+    // Array.prototype.find()
+    // Find is like filter, but instead returns just the one you are looking for
+    // finds the comment with the ID of 823423
+    const comment = comments.find(comment => comment.id === 823423) // without the return true this is known as an implicit return 
+
+    console.log(comment)
+    // Array.prototype.findIndex()
+    // Find the comment with this ID
+    // delete the comment with the ID of 823423
+    const index = comments.findIndex(comment => comment.id === 823423) // finds the index of that specific id 
+    comments.splice(index, 1) // deletes the index and specifies it is only that specific item. If you put index alone it deletes everything after. If you put (index, 2) it will delete another element after that 1  
+
+
+    console.log(index)
+  </script>
+</body>
+
+</html>
